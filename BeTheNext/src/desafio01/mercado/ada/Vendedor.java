@@ -40,7 +40,7 @@ public class Vendedor {
     }
 
     public String mostraResultado() {
-        return " > " + nome + " " + sobrenome + " valor total de vendas: " + getValorVenda() + "   ";
+        return " > " + nome + " " + sobrenome + ", valor total de vendas: " + getValorVenda() + "   ";
     }
 
 }

@@ -23,6 +23,7 @@ public class Main {
         Mercado mercadoFrutas = new Mercado(vendedoresFrutas, 550, "frutas");
         Mercado mercadoCosmeticos = new Mercado(vendedoresCosmeticos, 740, "Cosmeticos");
         Mercado mercadoFarmacia = new Mercado(vendedoresFarmacia, 820, "Farmacos");
+        Mercado[] mercados = new Mercado[]{mercadoFrutas, mercadoCosmeticos, mercadoFarmacia};
 
         Comprador comprador = new Comprador();
         Regulador regulador = new Regulador();
@@ -38,6 +39,10 @@ public class Main {
         mostraResumo(mercadoFrutas);
         mostraResumo(mercadoCosmeticos);
         mostraResumo(mercadoFarmacia);
+
+        melhorVendedor(mercados);
+        melhorMercado(mercados);
+
     }
 
     private static void novoVendedor(String[] nome, String[] sobrenome, Vendedor[] AddVendedor, Random random) {
@@ -67,7 +72,7 @@ public class Main {
         System.out.println("\n---------------------------------------------------------------------\n");
         System.out.printf(">>>>>> Segue resumo do mercado %s <<<<<<\n\n", mercado.getNome());
 
-        System.out.println("-> A meta de venda para cada vendedor do: " + mercado.getMetas());
+        System.out.println("-> A meta de venda para cada vendedor: " + mercado.getMetas());
         System.out.println("-> O total de vendas realizado do mercado: " + mercado.getTotalVendas() + "\n");
         System.out.println("\n\n >>>>>> Segue para os vendedores suas vendas e bonificações <<<<<<\n\n");
 
@@ -75,6 +80,46 @@ public class Main {
             Vendedor vendedor = mercado.getVendedores()[i];
             System.out.printf(vendedor.mostraResultado() + ">> Bonificação: %.2f\n", vendedor.getValorBonificacao());
         }
+    }
+
+    private static Vendedor verifica(Mercado mercado){
+        int inicio = 0;
+        int qtd = 0;
+
+        for(int i = 0; i < mercado.getVendedores().length; i++) {
+            if(mercado.getVendedores()[i].getValorVenda() > inicio) {
+                qtd = i;
+                inicio = mercado.getVendedores()[i].getValorVenda();
+            }
+        }
+        return  mercado.getVendedores()[qtd];
+    }
+
+    private static void melhorVendedor(Mercado[] mercados){
+        Vendedor melhorVendedor[] = new Vendedor[3];
+
+        for(int i = 0; i < mercados.length; i++){
+            melhorVendedor[i] = verifica(mercados[i]);
+        }
+
+        System.out.println("\n\n =*=*=*=*=*=*= TOP 3 VENDEDORES =*=*=*=*=*=*= \n\n");
+        for(int i = 0; i < melhorVendedor.length; i++) {
+            System.out.printf(">>>> %s  |  Mercado: %s  |  Quantidade de vendas:   <<<< \n", melhorVendedor[i].toString(),
+                    mercados[i].getNome(), melhorVendedor[i].getValorVenda());
+        }
+    }
+
+    private static void melhorMercado(Mercado[] mercados) {
+        int inicio = 0;
+        int qtd = 0;
+        for(int i = 0; i < mercados.length; i++){
+            if(mercados[i].getTotalVendas() > inicio){
+                qtd = i;
+                inicio = mercados[i].getTotalVendas();
+            }
+        }
+        System.out.println("\n\n =*=*=*=*=*=*= MELHOR MERCADO =*=*=*=*=*=*= \n\n");
+        System.out.printf(">>> O Mercado que obteve mais rentábilidade foi : %s !!! <<< \n", mercados[qtd].getNome());
     }
 }
 
